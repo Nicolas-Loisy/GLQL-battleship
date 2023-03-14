@@ -13,8 +13,8 @@ public class Coordonnee {
    * @param colonne la coordonnée de colonne.
    */
   public Coordonnee(int ligne, int colonne) {
-    this.colonne = colonne;
     this.ligne = ligne;
+    this.colonne = colonne;
   }
 
   /**

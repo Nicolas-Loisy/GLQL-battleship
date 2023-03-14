@@ -9,16 +9,28 @@ import jeu.Plateau;
 import jeu.ResultatAttaque;
 import jeu.bateaux.Bateau;
 import jeu.exceptions.ReglesException;
+import jeu.inputOutput.iOutput;
 
 public abstract class aJoueur implements iJoueur{
 
   private Plateau plateau;
   private Map<Coordonnee, Boolean> attaques;
   private String nom;
+  private iOutput output;
 
-  protected aJoueur () {
+  protected aJoueur (iOutput output) {
+    this.output = output;
     this.plateau = new Plateau();
     this.attaques = new HashMap<>();
+  }
+
+  /**
+   * getter pour l'attribut nom
+   * 
+   * @retun Nom du joueur
+   */
+  protected iOutput getOutput() {
+    return output;
   }
 
   /**
@@ -26,7 +38,7 @@ public abstract class aJoueur implements iJoueur{
    * 
    * @param String Nom du joueur
    */
-  public void setNom(String nom) {
+  protected void setNom(String nom) {
     this.nom = nom;
   }
 

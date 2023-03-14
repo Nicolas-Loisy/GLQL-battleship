@@ -17,7 +17,7 @@ public class JoueurFactory {
       case HUMAIN :
         return new Humain(input, output);
       case ORDI_HASARD :
-        return null; // TODO : implémenter l'ordinateur
+        return new OrdiHasard(output);
       default :
         return null;
     }

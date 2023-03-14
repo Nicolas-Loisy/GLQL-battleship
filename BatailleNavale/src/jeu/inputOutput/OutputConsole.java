@@ -154,7 +154,7 @@ public class OutputConsole implements iOutput {
    */
   @Override
   public void msgDebutTour(iJoueur joueur) {
-    System.out.println("\n" + joueur.getNom().toUpperCase() + ", C'EST TON TOUR !\n");
+    System.out.println("\n" + joueur.getNom() + ", c'est ton tour !\n");
   }
 
   @Override
@@ -191,7 +191,7 @@ public class OutputConsole implements iOutput {
    */
   @Override
   public void msgVictoire(iJoueur gagnant) {
-    System.out.println("\nLe gagnant est : " + gagnant.getNom());
+    System.out.println("\n" + gagnant.getNom() + " a gagné !\n");
   }
 
   /**

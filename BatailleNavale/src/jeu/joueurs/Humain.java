@@ -15,7 +15,6 @@ import jeu.inputOutput.iOutput;
 public class Humain extends aJoueur {
 
   iInput input;
-  iOutput output;
 
   /**
    * Constructeur de la classe Joueur.
@@ -23,9 +22,8 @@ public class Humain extends aJoueur {
    * @param plateau Le plateau de jeu du joueur.
    */
   public Humain(iInput input, iOutput output) {
-    super();
+    super(output);
     this.input = input;
-    this.output = output;
     String nom = askUserNom();
     super.setNom(nom);
   }
@@ -40,10 +38,10 @@ public class Humain extends aJoueur {
     String nom = null;
     while (nom == null) {
       try {
-        output.msgSaisieNom();
+        super.getOutput().msgSaisieNom();
         nom = input.getNomJoueur();
       } catch (ReglesException e) {
-        output.msgError(e.getMessage());
+        super.getOutput().msgError(e.getMessage());
       }
     }
     return nom;
@@ -59,11 +57,11 @@ public class Humain extends aJoueur {
     Coordonnee coord = null;
     while (coord == null) {
       try {
-        output.msgSaisieCoordonnee();
+        super.getOutput().msgSaisieCoordonnee();
         String strCoord = input.getCoordonnee();
         coord = new Coordonnee(strCoord);
       } catch (ReglesException e) {
-        output.msgError(e.getMessage());
+        super.getOutput().msgError(e.getMessage());
       }
     }
     return coord;
@@ -79,10 +77,10 @@ public class Humain extends aJoueur {
     Orientation orientation = null;
     while (orientation == null) {
       try {
-        output.msgSaisieOrientation();
+        super.getOutput().msgSaisieOrientation();
         orientation = input.getOrientation();
       } catch (ReglesException e) {
-        output.msgError(e.getMessage());
+        super.getOutput().msgError(e.getMessage());
       }
     }
     return orientation;
@@ -96,19 +94,19 @@ public class Humain extends aJoueur {
    */
   @Override
   public void placerBateaux(List<Bateau> bateauxAPlacer) {
-    output.msgDebutPlacerBateau(super.getNom());
+    super.getOutput().msgDebutPlacerBateau(super.getNom());
     for (Bateau bateau : bateauxAPlacer) {
-      output.afficherPlateau(super.getPlateau());
+      super.getOutput().afficherPlateau(super.getPlateau());
       Boolean bateauPlace = false;
       while (!bateauPlace) {
-        output.msgPlacerBateau(bateau);
+        super.getOutput().msgPlacerBateau(bateau);
         Coordonnee coordDepart = askUserCoordonnee();
         Orientation orientation = askUserOrientation();
         try {
           super.placerBateau(bateau, coordDepart, orientation);
           bateauPlace = true;
         } catch (ReglesException e) {
-          output.msgError(e.getMessage());
+          super.getOutput().msgError(e.getMessage());
         }
       }
     }
