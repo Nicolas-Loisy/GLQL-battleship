@@ -9,28 +9,15 @@ public class Bateau {
   private String nom;
   private int taille;
 
-  /**
-   * Constructeur de la classe Bateau.
-   * @param nom    le nom du bateau.
-   * @param taille la taille du bateau.
-   */
   public Bateau(String nom, int taille) {
     this.nom = nom;
     this.taille = taille;
   }
 
-  /**
-   * Cette méthode renvoie la taille du bateau.
-   * @return la taille du bateau.
-   */
   public int getTaille() {
     return this.taille;
   }
 
-  /**
-   * Cette méthode renvoie le nom du bateau.
-   * @return le nom du bateau.
-   */
   public String getNom() {
     return nom;
   }

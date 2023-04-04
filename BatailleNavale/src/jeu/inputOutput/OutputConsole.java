@@ -6,7 +6,6 @@ import jeu.Coordonnee;
 import jeu.Plateau;
 import jeu.ResultatAttaque;
 import jeu.bateaux.Bateau;
-import jeu.joueurs.iJoueur;
 
 /**
  * La classe OutputConsole implémente l'interface iOutput et définit les
@@ -14,24 +13,76 @@ import jeu.joueurs.iJoueur;
  * les messages à l'utilisateur via la console.
  */
 public class OutputConsole implements iOutput {
-
-  /**
-   * Affiche un message de début de placement de bateau pour un joueur donné.
-   * 
-   * @param joueur Le joueur qui va placer ses bateaux.
-   */
   @Override
-  public void msgDebutPlacerBateau(String nomJoueur) {
+  public void msgDebutDePartie(){}
+
+  @Override
+  public void msgFinDePartie(String nomGagnant){
+    System.out.println("\nFin de la partie\n" + nomGagnant.toUpperCase() + " A GAGNE !\n");
+  }
+
+  @Override
+  public void msgDebutPlacerBateaux(String nomJoueur) {
     System.out.println("Au tour de " + nomJoueur + " de placer ses bateaux");
   }
 
+  @Override
+  public void msgSaisieBateau(Bateau bateau, Plateau plateau) {
+    msgPlateau(plateau);
+    System.out.println("Où placer le " + bateau.getNom() + " (Taille = " + bateau.getTaille() + ") : ");
+  }
+
+  public void msgFinPlacerBateaux(){
+    System.out.println("Tous les bateaux ont été placés");
+  }
+
   /**
-   * Affiche le plateau de jeu pour un joueur donné.
+   * Affiche un message de début de tour pour un joueur donné.
    * 
-   * @param plateau Le plateau de jeu à afficher.
+   * @param joueur Le joueur qui va jouer.
    */
   @Override
-  public void afficherPlateau(Plateau plateau) {
+  public void msgDebutDeTour(String nomJoueur) {
+    System.out.println("\n" + nomJoueur + ", c'est ton tour !\n");
+  }
+
+  @Override
+  public void msgFinDeTour(){
+    System.out.println("Fin du tour");
+  }
+
+  @Override
+  public void msgDebutAttaque(Map<Coordonnee, Boolean> attaques){
+    System.out.println("Historique des attaques : ");
+    afficherAttaques(attaques);
+  }
+
+  @Override
+  public void msgFinAttaque(ResultatAttaque resultat, Coordonnee coord){
+    System.out.println("Résultat de l'attaque en " + coord + " : " + resultat);
+  }
+
+  @Override
+  public void msgSaisieCoordonnee() {
+    System.out.print("Veuillez saisir une coordonnée de type algébrique (ex: A1) : ");
+  }
+
+  @Override
+  public void msgSaisieNom() {
+    System.out.print("\nVeuillez saisir le nom du joueur : ");
+  }
+
+  @Override
+  public void msgSaisieOrientation() {
+    System.out.print("Veuillez saisir une orientation (H ou V) : ");
+  }
+
+  @Override
+  public void msgError(String msg) {
+    System.out.println(msg);
+  }
+
+  public void msgPlateau(Plateau plateau) {
     StringBuilder sb = new StringBuilder();
     int nbrLignes = Plateau.getNombreLigne();
     int nbrColonnes = Plateau.getNombreColonne();
@@ -72,14 +123,14 @@ public class OutputConsole implements iOutput {
     System.out.println(sb.toString());
   }
 
-  public void afficherAttaques(Map<Coordonnee, Boolean> attaques) {
+  // FONCTIONS PRIVEES
+  private void afficherAttaques(Map<Coordonnee, Boolean> attaques) {
     StringBuilder sb = new StringBuilder();
     int nbrLignes = Plateau.getNombreLigne();
     int nbrColonnes = Plateau.getNombreColonne();
     int ligne = 0;
     int colonne = 0;
 
-    sb.append(afficherBandeau("VOS ATTAQUES") + "\n");
     // Affichage de l'entête de colonnes (chiffres 1 à 10)
     sb.append("  ");
     colonne++;
@@ -108,21 +159,13 @@ public class OutputConsole implements iOutput {
           sb.append("~ ");
         }
       }
-
       // Passage à la ligne suivante
       sb.append(System.lineSeparator());
     }
     System.out.println(sb.toString());
   }
 
-  /**
-   * Affiche un bandeau encadré avec le message donné au centre.
-   * 
-   * @param message Le message à afficher dans le bandeau.
-   * @return La chaîne de caractères représentant le bandeau encadré avec le
-   *         message au centre.
-   */
-  public static String afficherBandeau(String message) {
+  private String afficherBandeau(String message) {
     int longueurMessage = message.length();
     String margin = "  ";
     String ligneBandeau = margin + "+---" + "-".repeat(longueurMessage) + "--+";
@@ -135,98 +178,5 @@ public class OutputConsole implements iOutput {
         .append(ligneVide).append("\n")
         .append(ligneBandeau).append("\n");
     return sb.toString();
-  }
-
-  /**
-   * Affiche un message demandant où placer un bateau.
-   * 
-   * @param bateau Le bateau à placer.
-   */
-  @Override
-  public void msgPlacerBateau(Bateau bateau) {
-    System.out.println("Où placer le " + bateau.getNom() + " ? (Taille = " + bateau.getTaille() + ")\n");
-  }
-
-  /**
-   * Affiche un message de début de tour pour un joueur donné.
-   * 
-   * @param joueur Le joueur qui va jouer.
-   */
-  @Override
-  public void msgDebutTour(iJoueur joueur) {
-    System.out.println("\n" + joueur.getNom() + ", c'est ton tour !\n");
-  }
-
-  @Override
-  public void changementTour() {
-    System.out.println("\n=================================================================\n");
-  }
-
-  /**
-   * Affiche le résultat d'une attaque sur une case.
-   * 
-   * @param resultat Le résultat de l'attaque.
-   */
-  @Override
-  public void msgResultatAttaque(ResultatAttaque resultat) {
-    switch (resultat) {
-      case MANQUE:
-        System.out.println("Vous avez manqué la cible !");
-        break;
-      case TOUCHE:
-        System.out.println("Touché !");
-        break;
-      case COULE:
-        System.out.println("Coulé !");
-        break;
-      case GAMEOVER:
-        System.out.println("Bravo, vous avez gagné la partie !");
-    }
-  }
-
-  /**
-   * Affiche un message de victoire avec le nom du joueur gagnant.
-   * 
-   * @param gagnant le joueur gagnant.
-   */
-  @Override
-  public void msgVictoire(iJoueur gagnant) {
-    System.out.println("\n" + gagnant.getNom() + " a gagné !\n");
-  }
-
-  /**
-   * Affiche un message demandant à l'utilisateur de saisir une coordonnée de type
-   * algébrique.
-   */
-  @Override
-  public void msgSaisieCoordonnee() {
-    System.out.print("Veuillez saisir une coordonnée de type algébrique (ex: A1) : ");
-  }
-
-  /**
-   * Affiche un message demandant à l'utilisateur de saisir le nom d'un joueur.
-   */
-  @Override
-  public void msgSaisieNom() {
-    System.out.print("\nVeuillez saisir le nom du joueur : ");
-  }
-
-  /**
-   * Affiche un message demandant à l'utilisateur de saisir une orientation (H ou
-   * V).
-   */
-  @Override
-  public void msgSaisieOrientation() {
-    System.out.print("Veuillez saisir une orientation (H ou V) : ");
-  }
-
-  /**
-   * Affiche un message d'erreur.
-   * 
-   * @param msg le message d'erreur à afficher.
-   */
-  @Override
-  public void msgError(String msg) {
-    System.out.println(msg);
   }
 }

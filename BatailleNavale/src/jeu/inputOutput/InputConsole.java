@@ -13,11 +13,6 @@ public class InputConsole implements iInput {
 
   static Scanner scanner = new Scanner(System.in);
 
-  /**
-   * Récupère le nom du joueur à partir de la saisie utilisateur
-   * @return Le nom du joueur
-   * @throws ReglesException si le nom est vide
-   */
   public String getNomJoueur() throws ReglesException {
     String nom = scanner.nextLine();
 
@@ -27,11 +22,6 @@ public class InputConsole implements iInput {
       throw new ReglesException(TypeException.NOM_ERROR);
   }
 
-  /**
-   * Récupère une coordonnée de type algébrique à partir de la saisie utilisateur
-   * @return La coordonnée sous forme de chaîne de caractères
-   * @throws ReglesException si la chaîne ne correspond pas à une coordonnée valide
-   */
   public String getCoordonnee() throws ReglesException {
     String input = scanner.nextLine().toUpperCase();
 
@@ -53,11 +43,6 @@ public class InputConsole implements iInput {
     return input;
   }
 
-  /**
-   * Récupère l'orientation choisie par l'utilisateur (HORIZONTAL ou VERTICAL)
-   * @return L'orientation choisie
-   * @throws ReglesException si l'utilisateur entre une orientation invalide
-   */
   public Orientation getOrientation() throws ReglesException {
     String input = scanner.nextLine().toUpperCase();
     if (input.equals("H")) {

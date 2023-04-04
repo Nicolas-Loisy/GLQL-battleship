@@ -4,42 +4,28 @@ import java.util.List;
 
 import jeu.Coordonnee;
 import jeu.Orientation;
+import jeu.ResultatAttaque;
 import jeu.bateaux.Bateau;
 import jeu.exceptions.ReglesException;
-import jeu.inputOutput.iInput;
-import jeu.inputOutput.iOutput;
+import jeu.exceptions.TypeException;
+import jeu.inputOutput.TypeInputOutput;
+
 
 /**
  * Classe représentant un joueur de la bataille navale.
  */
 public class Humain extends aJoueur {
-
-  iInput input;
-
-  /**
-   * Constructeur de la classe Joueur.
-   * 
-   * @param plateau Le plateau de jeu du joueur.
-   */
-  public Humain(iInput input, iOutput output) {
-    super(output);
-    this.input = input;
-    String nom = askUserNom();
-    super.setNom(nom);
+  public Humain(TypeInputOutput inOutType) {
+    super(inOutType);
   }
 
-  /**
-   * Demande à l'utilisateur de saisir un nom de joueur.
-   * 
-   * @return le nom saisi par l'utilisateur
-   */
   @Override
   public String askUserNom() {
     String nom = null;
     while (nom == null) {
       try {
         super.getOutput().msgSaisieNom();
-        nom = input.getNomJoueur();
+        nom = super.getIn().getNomJoueur();
       } catch (ReglesException e) {
         super.getOutput().msgError(e.getMessage());
       }
@@ -47,19 +33,18 @@ public class Humain extends aJoueur {
     return nom;
   }
 
-  /**
-   * Demande à l'utilisateur de saisir une coordonnée.
-   * 
-   * @return la coordonnée saisie par l'utilisateur
-   */
   @Override
   public Coordonnee askUserCoordonnee() {
     Coordonnee coord = null;
     while (coord == null) {
       try {
         super.getOutput().msgSaisieCoordonnee();
-        String strCoord = input.getCoordonnee();
+        String strCoord = super.getIn().getCoordonnee();
         coord = new Coordonnee(strCoord);
+        if (!super.getPlateau().isCoordonneeSurPlateau(coord)){
+          coord = null;
+          throw new ReglesException(TypeException.HORS_PLATEAU_ERROR);
+        }
       } catch (ReglesException e) {
         super.getOutput().msgError(e.getMessage());
       }
@@ -67,18 +52,13 @@ public class Humain extends aJoueur {
     return coord;
   }
 
-  /**
-   * Demande à l'utilisateur de saisir une orientation.
-   * 
-   * @return l'orientation saisie par l'utilisateur
-   */
   @Override
   public Orientation askUserOrientation() {
     Orientation orientation = null;
     while (orientation == null) {
       try {
         super.getOutput().msgSaisieOrientation();
-        orientation = input.getOrientation();
+        orientation = super.getIn().getOrientation();
       } catch (ReglesException e) {
         super.getOutput().msgError(e.getMessage());
       }
@@ -86,20 +66,14 @@ public class Humain extends aJoueur {
     return orientation;
   }
 
-  /**
-   * Place les bateaux d'un joueur sur son plateau
-   *
-   * @param joueur         le joueur qui place ses bateaux
-   * @param bateauxAPlacer la liste des bateaux à placer
-   */
   @Override
   public void placerBateaux(List<Bateau> bateauxAPlacer) {
-    super.getOutput().msgDebutPlacerBateau(super.getNom());
+    super.getOutput().msgDebutPlacerBateaux(super.getNom());
+
     for (Bateau bateau : bateauxAPlacer) {
-      super.getOutput().afficherPlateau(super.getPlateau());
       Boolean bateauPlace = false;
       while (!bateauPlace) {
-        super.getOutput().msgPlacerBateau(bateau);
+        super.getOutput().msgSaisieBateau(bateau, super.getPlateau());
         Coordonnee coordDepart = askUserCoordonnee();
         Orientation orientation = askUserOrientation();
         try {
@@ -109,6 +83,44 @@ public class Humain extends aJoueur {
           super.getOutput().msgError(e.getMessage());
         }
       }
-    }
+    } 
+
+    super.getOutput().msgFinPlacerBateaux();
   }
+
+  @Override
+  public void msgDebutPartie(){
+    super.getOutput().msgDebutDePartie();
+  }
+
+  @Override
+  public void msgFinPartie(String nomGagnant){
+    super.getOutput().msgFinDePartie(nomGagnant);
+  }
+
+  @Override
+  public void msgDebutTour(){
+    super.getOutput().msgDebutDeTour(super.getNom());
+    super.getOutput().msgPlateau(super.getPlateau());
+  }
+
+  @Override
+  public void msgFinTour(){
+    super.getOutput().msgFinDeTour();
+  }
+
+  @Override
+  public void msgDebutAttaque(){
+    super.getOutput().msgDebutAttaque(super.getAttaques());
+  }
+
+  @Override
+  public void msgFinAttaque(ResultatAttaque resultat, Coordonnee coord){
+    super.getOutput().msgFinAttaque(resultat, coord);
+  }
+
+  protected void msgError(ReglesException e){
+    super.getOutput().msgError(super.getNom());
+  }
+
 }

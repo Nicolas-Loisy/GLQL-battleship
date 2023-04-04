@@ -20,29 +20,14 @@ public class Plateau {
 
   private final List<Map<Bateau, Coordonnee[]>> bateaux = new ArrayList<>();
 
-  /**
-   * Retourne le nombre de lignes sur le plateau
-   * 
-   * @return Le nombre de lignes sur le plateau
-   */
   public static int getNombreLigne() {
     return MAX_LIGNE;
   }
 
-  /**
-   * Retourne le nombre de colonnes sur le plateau
-   * 
-   * @return Le nombre de colonnes sur le plateau
-   */
   public static int getNombreColonne() {
     return MAX_COLONNE;
   }
 
-  /**
-   * Retourne la liste des bateaux placés sur le plateau
-   * 
-   * @return La liste des bateaux placés sur le plateau
-   */
   public List<Map<Bateau, Coordonnee[]>> getBateaux() {
     return bateaux;
   }
@@ -152,14 +137,6 @@ public class Plateau {
     return plateau.toString();
   }
 
-  /**
-   * Vérifie si deux coordonnées sont adjacentes en ligne ou en colonne.
-   *
-   * @param coord1 La première coordonnée à comparer.
-   * @param coord2 La seconde coordonnée à comparer.
-   * @return True si les coordonnées sont adjacentes en ligne ou en colonne, false
-   *         sinon.
-   */
   private boolean isAdjacentes(Coordonnee coord1, Coordonnee coord2) {
     return coord1.getLigne() == coord2.getLigne() || coord1.getColonne() == coord2.getColonne();
   }
@@ -221,22 +198,11 @@ public class Plateau {
     return listeCoord.toArray(new Coordonnee[0]);
   }
 
-  /**
-   * Supprime un bateau de la liste des bateaux.
-   * 
-   * @param bateau le bateau à supprimer
-   */
   private void supprimerBateau(Map<Bateau, Coordonnee[]> bateau) {
     bateaux.remove(bateau);
   }
 
-  /**
-   * Vérifie si une coordonnée est située sur le plateau de jeu.
-   * 
-   * @param coordonnee la coordonnée à vérifier
-   * @return true si la coordonnée est sur le plateau, false sinon
-   */
-  private boolean isCoordonneeSurPlateau(Coordonnee coordonnee) {
+  public boolean isCoordonneeSurPlateau(Coordonnee coordonnee) {
     int ligne = coordonnee.getLigne();
     int colonne = coordonnee.getColonne();
     return ligne >= 1 && ligne <= MAX_LIGNE && colonne >= 1 && colonne <= MAX_COLONNE;

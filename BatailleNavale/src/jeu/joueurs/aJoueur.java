@@ -9,6 +9,9 @@ import jeu.Plateau;
 import jeu.ResultatAttaque;
 import jeu.bateaux.Bateau;
 import jeu.exceptions.ReglesException;
+import jeu.inputOutput.InputOutputFactory;
+import jeu.inputOutput.TypeInputOutput;
+import jeu.inputOutput.iInput;
 import jeu.inputOutput.iOutput;
 
 public abstract class aJoueur implements iJoueur{
@@ -16,89 +19,43 @@ public abstract class aJoueur implements iJoueur{
   private Plateau plateau;
   private Map<Coordonnee, Boolean> attaques;
   private String nom;
-  private iOutput output;
 
-  protected aJoueur (iOutput output) {
-    this.output = output;
+  private iOutput out;
+  private iInput in;
+
+  protected aJoueur (TypeInputOutput inOutType) {
+    out = InputOutputFactory.getOutput(inOutType);
+    in = InputOutputFactory.getInput(inOutType);
+
     this.plateau = new Plateau();
     this.attaques = new HashMap<>();
+    this.nom = askUserNom();
   }
 
-  /**
-   * getter pour l'attribut nom
-   * 
-   * @retun Nom du joueur
-   */
   protected iOutput getOutput() {
-    return output;
+    return out;
   }
 
-  /**
-   * setter pour l'attribut nom
-   * 
-   * @param String Nom du joueur
-   */
-  protected void setNom(String nom) {
-    this.nom = nom;
+  protected iInput getIn() {
+    return in;
   }
 
-  /**
-   * Getter pour l'attribut nom
-   * 
-   * @return Nom du joueur
-   */
+  protected Plateau getPlateau() {
+    return plateau;
+  }
+
+  protected Map<Coordonnee, Boolean> getAttaques(){
+    return attaques;
+  }
+
   @Override
   public String getNom() {
     return nom;
   }
 
-  /**
-   * Getter pour le plateau de jeu du joueur.
-   * 
-   * @return Le plateau de jeu du joueur.
-   */
-  @Override
-  public Plateau getPlateau() {
-    return plateau;
-  }
-
-  /**
-   * Getter pour la liste des attaques effectuées par le joueur.
-   * 
-   * @return La liste des attaques effectuées par le joueur.
-   */
-  @Override
-  public Map<Coordonnee, Boolean> getAttaques() {
-    return attaques;
-  }
-
-  /**
-   * Retourne le nom du joueur.
-   *
-   * @return Le nom du joueur.
-   */
   @Override
   public String toString() {
     return this.nom;
-  }
-
-  /**
-   * Méthode pour effectuer une attaque sur le plateau de l'adversaire.
-   * 
-   * @param plateauAdversaire Le plateau de l'adversaire.
-   * @param coordonnee        La coordonnée à attaquer.
-   */
-  @Override
-  public ResultatAttaque attaquer(Plateau plateauAdversaire, Coordonnee coord) {
-    ResultatAttaque resultat = plateauAdversaire.recevoirAttaque(coord);
-    if (!attaques.containsKey(coord)) {
-      if (resultat != ResultatAttaque.MANQUE) {
-        attaques.put(coord, true);
-      } else {
-        attaques.put(coord, false);
-      }
-    }
-    return resultat;
   }
 
   /**
@@ -133,5 +90,24 @@ public abstract class aJoueur implements iJoueur{
     } catch (ReglesException e) {
       throw e;
     }
+  }
+
+  @Override
+  public ResultatAttaque attaquer(iJoueur joueurAdverse, Coordonnee coord) {
+    ResultatAttaque resultat = joueurAdverse.recevoirAttaque(coord);
+    if (!attaques.containsKey(coord)) {
+      if (resultat != ResultatAttaque.MANQUE) {
+        attaques.put(coord, true);
+      } else {
+        attaques.put(coord, false);
+      }
+    }
+    return resultat;
+  }
+
+  @Override
+  public ResultatAttaque recevoirAttaque(Coordonnee coord) {
+    ResultatAttaque resultat = plateau.recevoirAttaque(coord);
+    return resultat;
   }
 }

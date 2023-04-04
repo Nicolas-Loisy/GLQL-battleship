@@ -9,15 +9,13 @@ import jeu.bateaux.TypeBateaux;
 import jeu.inputOutput.TypeInputOutput;
 import jeu.joueurs.TypeJoueur;
 
-public class Main {
+public class Main_hote {
 
   public static void main(String[] args) {
-    Jeu jeu = new Jeu();
-
     //Choix des paramètres => Rendre ca dynamique par la suite
     TypeInputOutput inputOutputType = TypeInputOutput.CONSOLE;
-    TypeJoueur typeJ1 = TypeJoueur.ORDI_HASARD;
-    TypeJoueur typeJ2 = TypeJoueur.ORDI_HASARD;
+    TypeJoueur typeJ1 = TypeJoueur.HUMAIN;
+    TypeJoueur typeJ2 = TypeJoueur.HUMAIN;
     List<TypeBateaux> bateauxAPlacer = new ArrayList<>();
     bateauxAPlacer.add(TypeBateaux.SOUS_MARIN);
     // bateauxAPlacer.add(TypeBateaux.CROISEUR);
@@ -31,7 +29,8 @@ public class Main {
     config.put(TypeParam.TYPE_J2, typeJ2);
     config.put(TypeParam.LISTE_BATEAUX, bateauxAPlacer);
 
-    jeu.jouer(config);
+    Jeu jeu = new Jeu(config);
+    jeu.jouer();
   }
 
 }

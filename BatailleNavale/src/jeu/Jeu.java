@@ -1,5 +1,6 @@
 package jeu;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,51 +8,16 @@ import java.util.Map;
 import jeu.bateaux.TypeBateaux;
 import jeu.bateaux.Bateau;
 import jeu.bateaux.BateauFactory;
-import jeu.inputOutput.InputOutputFactory;
 import jeu.inputOutput.TypeInputOutput;
-import jeu.inputOutput.iInput;
-import jeu.inputOutput.iOutput;
 import jeu.joueurs.iJoueur;
 import jeu.joueurs.JoueurFactory;
 import jeu.joueurs.TypeJoueur;
 
 public class Jeu {
-
-  private iInput input;
-  private iOutput output;
   private iJoueur joueur1;
   private iJoueur joueur2;
   private iJoueur joueurActuel;
   private iJoueur joueurAdverse;
-
-  /**
-   * Lance une partie de bataille navale en utilisant la configuration spécifiée.
-   * 
-   * @param config Une Map contenant les paramètres de configuration de la partie.
-   *               Les clés doivent correspondre à l'une des valeurs de
-   *               l'énumération TypeParam.
-   *               Les valeurs associées à ces clés doivent être du type
-   *               correspondant au TypeParam correspondant.
-   *               Les paramètres requis sont:
-   *               - INPUT_OUTPUT_TYPE: Le type d'entrée/sortie utilisé par
-   *               l'application. Doit être une valeur de InputOutputType.
-   *               - TYPE_J1: Le type de joueur utilisé pour le joueur 1. Doit
-   *               être une valeur de TypeJoueur.
-   *               - TYPE_J2: Le type de joueur utilisé pour le joueur 2. Doit
-   *               être une valeur de TypeJoueur.
-   *               - LISTE_BATEAUX: La liste des bateaux utilisés pour la partie.
-   *               Doit être une liste contenant des valeurs de TypeBateaux.
-   */
-  public void jouer(Map<TypeParam, Object> config) {
-    initPartie(config);
-
-    iJoueur gagnant = null;
-    while (gagnant == null) {
-      gagnant = tourDeJeu();
-    }
-
-    output.msgVictoire(gagnant);
-  }
 
   /**
    * Initialise une partie de bataille navale en créant deux joueurs et leurs
@@ -59,8 +25,8 @@ public class Jeu {
    * 
    * @param config Une Map contenant les paramètres de configuration de la partie.
    */
-  public void initPartie(Map<TypeParam, Object> config) {
-
+  public Jeu(Map<TypeParam, Object> config) {
+    // Récupération des paramètres de la partie
     TypeInputOutput inputOutputType = (TypeInputOutput) config.get(TypeParam.INPUT_OUTPUT_TYPE);
     TypeJoueur typeJ1 = (TypeJoueur) config.get(TypeParam.TYPE_J1);
     TypeJoueur typeJ2 = (TypeJoueur) config.get(TypeParam.TYPE_J2);
@@ -74,15 +40,29 @@ public class Jeu {
       }
     }
 
-    input = InputOutputFactory.getInput(inputOutputType);
-    output = InputOutputFactory.getOutput(inputOutputType);
+    // Création des joueurs
+    try {
+      joueur1 = initJoueur(typeJ1, inputOutputType, listeBateaux);
+      joueur2 = initJoueur(typeJ2, inputOutputType, listeBateaux);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
 
-    joueur1 = initJoueur(typeJ1, listeBateaux);
-    joueur2 = initJoueur(typeJ2, listeBateaux);
-
-    // Le joueur 1 commence en premier
+    // Le joueur 1 commence à jouer
     joueurActuel = joueur1;
     joueurAdverse = joueur2;
+  }
+
+  public void jouer() {
+    iJoueur gagnant = null;
+
+    while (gagnant == null) {
+      gagnant = tourDeJeu();
+    }
+
+    joueur1.msgFinPartie(gagnant.getNom());
+    joueur2.msgFinPartie(gagnant.getNom());
   }
 
   /**
@@ -106,12 +86,13 @@ public class Jeu {
    * @param type         Le type de joueur à initialiser.
    * @param listeBateaux La liste de types de bateaux du joueur à initialiser.
    * @return Le joueur initialisé.
+   * @throws IOException
    */
-  private iJoueur initJoueur(TypeJoueur type, List<TypeBateaux> listeBateaux) {
-    iJoueur joueur = JoueurFactory.getJoueur(type, input, output);
+  private iJoueur initJoueur(TypeJoueur type, TypeInputOutput inputOutputType, List<TypeBateaux> listeBateaux) throws IOException {
+    iJoueur joueur;
+    joueur = JoueurFactory.creerJoueur(type, inputOutputType);
     List<Bateau> bateaux = creerBateaux(listeBateaux);
     joueur.placerBateaux(bateaux);
-    output.changementTour();
     return joueur;
   }
 
@@ -122,14 +103,14 @@ public class Jeu {
    *         encore finie
    */
   public iJoueur tourDeJeu() {
-    output.msgDebutTour(joueurActuel);
-    output.afficherPlateau(joueurActuel.getPlateau());
+    joueurActuel.msgDebutTour();
     boolean encoreUneAttaque = true;
-    while(encoreUneAttaque) {
-      output.afficherAttaques(joueurActuel.getAttaques());
+    while (encoreUneAttaque) {
+      joueurActuel.msgDebutAttaque();
       Coordonnee coord = joueurActuel.askUserCoordonnee();
-      ResultatAttaque resultat = joueurActuel.attaquer(joueurAdverse.getPlateau(), coord);
-      output.msgResultatAttaque(resultat);
+      ResultatAttaque resultat = joueurActuel.attaquer(joueurAdverse, coord);
+      joueurActuel.msgFinAttaque(resultat, coord);
+
       if (resultat == ResultatAttaque.GAMEOVER) {
         return joueurActuel;
       }
@@ -137,7 +118,7 @@ public class Jeu {
         encoreUneAttaque = false;
       }
     }
-
+    joueurActuel.msgFinTour();
     inverserJoueur();
     return null;
   }
@@ -145,10 +126,9 @@ public class Jeu {
   /**
    * Inverse le joueur atuel et le joueur adverse
    */
-  private void inverserJoueur(){
+  private void inverserJoueur() {
     joueurActuel = joueurActuel == joueur1 ? joueur2 : joueur1;
     joueurAdverse = joueurActuel == joueur1 ? joueur2 : joueur1;
-    output.changementTour();
   }
 
 }

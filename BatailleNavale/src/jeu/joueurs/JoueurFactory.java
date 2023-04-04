@@ -1,23 +1,19 @@
 package jeu.joueurs;
 
-import jeu.inputOutput.iInput;
-import jeu.inputOutput.iOutput;
+import java.io.IOException;
+
+import jeu.inputOutput.TypeInputOutput;
 
 public class JoueurFactory {
   
-  /**
-   * Retourne un joueur du type spécifié avec un nom donné.
-   *
-   * @param type Le type de joueur souhaité.
-   * @param nom Le nom du joueur.
-   * @return Un joueur du type spécifié avec un nom donné.
-   */
-  public static iJoueur getJoueur(TypeJoueur type, iInput input, iOutput output) {
-    switch(type) {
+  public static iJoueur creerJoueur(TypeJoueur JoueurType, TypeInputOutput inOutType) throws IOException {;
+    switch(JoueurType) {
       case HUMAIN :
-        return new Humain(input, output);
+        return new Humain(inOutType);
+      case HOTE :
+        return new Hote(inOutType, 8080);
       case ORDI_HASARD :
-        return new OrdiHasard(output);
+        return new OrdiHasard(inOutType);
       default :
         return null;
     }

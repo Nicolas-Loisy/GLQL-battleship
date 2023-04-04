@@ -16,23 +16,12 @@ public enum TypeException {
   COORD_OCCUPEE_ERROR("Emplacement déjà utilisé par un autre bateau."),
   COORDONNEES_ADJACENTES_ERROR("Les coordonnées du bateau ne sont pas adjacentes en ligne ou en colonne.");
 
-  /**
-   * Message associé au code d'exception.
-   */
   private String message;
 
-  /**
-   * Constructeur privé pour initialiser le message associé au code d'exception.
-   * @param message le message d'erreur associé au code d'exception.
-   */
   private TypeException(String message) {
     this.message = message;
   }
 
-  /**
-   * Getter pour récupérer le message d'erreur associé au code d'exception.
-   * @return le message d'erreur associé au code d'exception.
-   */
   public String getMessage() {
     return message;
   }
