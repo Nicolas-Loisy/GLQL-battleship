@@ -21,15 +21,19 @@ public interface iOutput {
 
   public void msgDebutDeTour(String nomJoueur);
   public void msgFinDeTour();
+  public void msgTourAdversaire();
+  public void msgFinTourAdversaire();
 
   public void msgDebutAttaque(Map<Coordonnee, Boolean> attaques);
   public void msgFinAttaque(ResultatAttaque resultat, Coordonnee coord);
+  public void msgFinAttaqueAdversaire(ResultatAttaque resultat, Coordonnee coord);
 
   // Autres affichages
   public void msgPlateau(Plateau plateau);
   public void msgError(String msg);
   public void msgSaisieCoordonnee();
   public void msgSaisieNom();
+  public void msgSaisieNomAdversaire();
   public void msgSaisieOrientation();
 }
 

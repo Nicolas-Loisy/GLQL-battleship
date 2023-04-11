@@ -10,6 +10,9 @@ import jeu.bateaux.Bateau;
 import jeu.bateaux.BateauFactory;
 import jeu.inputOutput.TypeInputOutput;
 import jeu.joueurs.iJoueur;
+import jeu.serveur.Client;
+import jeu.serveur.Serveur;
+import jeu.serveur.iConnexion;
 import jeu.joueurs.JoueurFactory;
 import jeu.joueurs.TypeJoueur;
 
@@ -40,10 +43,27 @@ public class Jeu {
       }
     }
 
+
+    // SERVEUR
+    // Serveur serveur = new Serveur(8080);
+    // serveur.connexion();
+
+
+    // CLIENT
+    Client serveur = new Client("localhost", 8080);
+    try {
+      serveur.connexion();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     // Création des joueurs
     try {
-      joueur1 = initJoueur(typeJ1, inputOutputType, listeBateaux);
-      joueur2 = initJoueur(typeJ2, inputOutputType, listeBateaux);
+      // joueur1 = initJoueur(typeJ1, inputOutputType, listeBateaux);
+      // joueur2 = initJoueur(typeJ2, inputOutputType, listeBateaux);
+      joueur1 = initJoueur(typeJ1, inputOutputType, listeBateaux, serveur);
+      joueur2 = initJoueur(typeJ2, inputOutputType, listeBateaux, serveur);
     } catch (IOException e) {
       e.printStackTrace();
       System.exit(1);
@@ -91,6 +111,14 @@ public class Jeu {
   private iJoueur initJoueur(TypeJoueur type, TypeInputOutput inputOutputType, List<TypeBateaux> listeBateaux) throws IOException {
     iJoueur joueur;
     joueur = JoueurFactory.creerJoueur(type, inputOutputType);
+    List<Bateau> bateaux = creerBateaux(listeBateaux);
+    joueur.placerBateaux(bateaux);
+    return joueur;
+  }
+
+  private iJoueur initJoueur(TypeJoueur type, TypeInputOutput inputOutputType, List<TypeBateaux> listeBateaux, iConnexion connexion) throws IOException {
+    iJoueur joueur;
+    joueur = JoueurFactory.creerJoueur(type, inputOutputType, connexion);
     List<Bateau> bateaux = creerBateaux(listeBateaux);
     joueur.placerBateaux(bateaux);
     return joueur;

@@ -29,7 +29,6 @@ public abstract class aJoueur implements iJoueur{
 
     this.plateau = new Plateau();
     this.attaques = new HashMap<>();
-    this.nom = askUserNom();
   }
 
   protected iOutput getOutput() {
@@ -51,6 +50,10 @@ public abstract class aJoueur implements iJoueur{
   @Override
   public String getNom() {
     return nom;
+  }
+
+  protected String setNom(String nom) {
+    return this.nom = nom;
   }
 
   @Override

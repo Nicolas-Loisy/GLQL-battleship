@@ -3,54 +3,48 @@ package jeu.serveur;
 import java.io.*;
 import java.net.*;
 
-public class Serveur {
-  private int port;
+public class Serveur extends aConnexion {
   private ServerSocket serveur;
-  private Socket socket;
-  private BufferedReader in; // flux de réception de données
-  private PrintWriter out; // flux d'envoi de données
 
   public Serveur(int port) {
-    this.port = port;
+    super(port);
   }
 
-  public boolean connexion() {
+  public Socket connexion() {
     try {
-      serveur = new ServerSocket(port);
+      serveur = new ServerSocket(super.getPort());
       System.out.println("Le serveur est en attente de connexions...");
     } catch (IOException e) {
       e.printStackTrace();
-      return false;
     }
 
     if (serveur != null) {
       try {
-        this.socket = serveur.accept();
+        super.setSocket(serveur.accept());
         System.out.println(
-          "Serveur : Connexion du client " + socket.getRemoteSocketAddress().toString() + " est acceptée !");
+          "Serveur : Connexion du client " + super.getSocket().getRemoteSocketAddress().toString() + " est acceptée !");
       } catch (IOException e) {
         System.err.println("Serveur : erreur lors de l'ouverture de l'acces : " + e);
       }
     }
 
-    if (socket != null) {
+    if (super.getSocket() != null) {
       try {
-        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        super.setOut(new PrintWriter(new BufferedWriter(new OutputStreamWriter(super.getSocket().getOutputStream()))));
+        super.setIn(new BufferedReader(new InputStreamReader(super.getSocket().getInputStream())));
       } catch (Exception e) {
         System.err.println("Client : Erreur lors de l'ouverture des flux : " + e);
-        return false;
       }
     }
 
-    return true;
+    return super.getSocket();
   }
 
   public boolean deconnexion() {
-    if (in != null && out != null) {
+    if (super.getIn() != null && super.getOut() != null) {
       try {
-        in.close();
-        out.close();
+        super.getIn().close();
+        super.getOut().close();
       } catch (Exception e) {
         System.err.println("Client : Erreur lors de la fermeture des flux : " + e);
         return false;
@@ -58,9 +52,9 @@ public class Serveur {
     }
 
     // Fermeture de la socket
-    if (socket != null) {
+    if (super.getSocket() != null) {
       try {
-        socket.close();
+        super.getSocket().close();
       } catch (IOException e) {
         System.err.println("Serveur : erreur de fermeture de socket." + e);
         return false;

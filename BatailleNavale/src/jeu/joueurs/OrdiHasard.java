@@ -15,6 +15,7 @@ public class OrdiHasard extends aJoueur {
 
   protected OrdiHasard(TypeInputOutput inOutType) {
     super(inOutType);
+    super.setNom(askUserNom());
   }
 
   @Override

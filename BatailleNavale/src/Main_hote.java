@@ -14,8 +14,21 @@ public class Main_hote {
   public static void main(String[] args) {
     //Choix des paramètres => Rendre ca dynamique par la suite
     TypeInputOutput inputOutputType = TypeInputOutput.CONSOLE;
-    TypeJoueur typeJ1 = TypeJoueur.HUMAIN;
-    TypeJoueur typeJ2 = TypeJoueur.HUMAIN;
+    
+    
+    // TypeJoueur typeJ1 = TypeJoueur.ORDI_HASARD;
+    // TypeJoueur typeJ2 = TypeJoueur.ORDI_HASARD;
+    
+    // TEST RESEAU SERVEUR
+    // TypeJoueur typeJ1 = TypeJoueur.HUMAIN_JOUEUR;
+    // TypeJoueur typeJ2 = TypeJoueur.HUMAIN_RESEAU;
+
+    // TEST RESEAU CLIENT
+    TypeJoueur typeJ1 = TypeJoueur.HUMAIN_RESEAU;
+    TypeJoueur typeJ2 = TypeJoueur.HUMAIN_JOUEUR;
+
+
+
     List<TypeBateaux> bateauxAPlacer = new ArrayList<>();
     bateauxAPlacer.add(TypeBateaux.SOUS_MARIN);
     // bateauxAPlacer.add(TypeBateaux.CROISEUR);

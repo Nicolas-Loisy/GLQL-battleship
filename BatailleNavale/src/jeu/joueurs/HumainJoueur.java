@@ -1,5 +1,6 @@
 package jeu.joueurs;
 
+import java.io.IOException;
 import java.util.List;
 
 import jeu.Coordonnee;
@@ -9,14 +10,19 @@ import jeu.bateaux.Bateau;
 import jeu.exceptions.ReglesException;
 import jeu.exceptions.TypeException;
 import jeu.inputOutput.TypeInputOutput;
+import jeu.serveur.iConnexion;
 
 
 /**
  * Classe représentant un joueur de la bataille navale.
  */
-public class Humain extends aJoueur {
-  public Humain(TypeInputOutput inOutType) {
+public class HumainJoueur extends aJoueur {
+
+  private iConnexion connexion;
+
+  public HumainJoueur(TypeInputOutput inOutType, iConnexion connexion) {
     super(inOutType);
+    this.connexion = connexion;
     super.setNom(askUserNom());
   }
 
@@ -31,6 +37,14 @@ public class Humain extends aJoueur {
         super.getOutput().msgError(e.getMessage());
       }
     }
+
+    try {
+      this.connexion.envoyer(nom);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     return nom;
   }
 
@@ -50,6 +64,14 @@ public class Humain extends aJoueur {
         super.getOutput().msgError(e.getMessage());
       }
     }
+
+    try {
+      this.connexion.envoyer(coord.toString());
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     return coord;
   }
 
@@ -63,6 +85,13 @@ public class Humain extends aJoueur {
       } catch (ReglesException e) {
         super.getOutput().msgError(e.getMessage());
       }
+    }
+
+    try {
+      this.connexion.envoyer(orientation.name());
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
     return orientation;
   }

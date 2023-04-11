@@ -3,46 +3,42 @@ package jeu.serveur;
 import java.io.*;
 import java.net.*;
 
-public class Client {
+public class Client extends aConnexion {
   private String adresse;
-  private int port;
-  private Socket socket;
-  private BufferedReader in;
-  private PrintWriter out;
-
+ 
   public Client(String adresse, int port) {
+    super(port);
     this.adresse = adresse;
-    this.port = port;
   }
 
-  public boolean connexion() throws IOException {
+  public Socket connexion() throws IOException {
+    Socket socket = null;
+    
     // Ouverture de la socket
     try {
-      socket = new Socket(adresse, port);
+      socket = new Socket(adresse, super.getPort());
       System.out.println("Client : la socket a été crée avec succès.");
     } catch (IOException e) {
       System.err.println("Client : erreur lors de la création de la socket : " + e);
-      return false;
     }
 
     // Ouverture des flux
     try {
-      out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
-      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      super.setOut(new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))));
+      super.setIn(new BufferedReader(new InputStreamReader(socket.getInputStream())));
     } catch (Exception e) {
       System.err.println("Client : Erreur lors de l'ouverture des flux : " + e);
-      return false;
     }
 
-    return true;
+    return socket;
   }
 
   public boolean deconnexion() throws IOException {
     // Fermeture des flux
-    if (in != null && out != null) {
+    if (super.getIn() != null && super.getOut() != null) {
       try {
-        in.close();
-        out.close();
+        super.getIn().close();
+        super.getOut().close();
       } catch (Exception e) {
         System.err.println("Client : Erreur lors de la fermeture des flux : " + e);
         return false;
@@ -51,20 +47,12 @@ public class Client {
 
     // Fermeture de la socket
     try {
-      socket.close();
+      super.getSocket().close();
     } catch (IOException e) {
       System.err.println("Client : erreur de fermeture de socket." + e);
       return false;
     }
 
     return true;
-  }
-
-  public void envoyer(String message) throws IOException {
-    out.println(message);
-  }
-
-  public String recevoir() throws IOException {
-    return in.readLine();
   }
 }

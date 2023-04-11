@@ -3,6 +3,7 @@ package jeu.joueurs;
 import java.io.IOException;
 
 import jeu.inputOutput.TypeInputOutput;
+import jeu.serveur.iConnexion;
 
 public class JoueurFactory {
   
@@ -18,5 +19,17 @@ public class JoueurFactory {
         return null;
     }
   }
+
+  public static iJoueur creerJoueur(TypeJoueur JoueurType, TypeInputOutput inOutType, iConnexion connexion) throws IOException {;
+    switch(JoueurType) {
+      case HUMAIN_RESEAU :
+        return new HumainReseau(inOutType, connexion);
+      case HUMAIN_JOUEUR :
+        return new HumainJoueur(inOutType, connexion);
+      default :
+        return null;
+    }
+  }
+  
 }
 

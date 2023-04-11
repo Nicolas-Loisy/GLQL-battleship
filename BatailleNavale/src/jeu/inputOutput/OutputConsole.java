@@ -32,6 +32,7 @@ public class OutputConsole implements iOutput {
     System.out.println("Où placer le " + bateau.getNom() + " (Taille = " + bateau.getTaille() + ") : ");
   }
 
+  @Override
   public void msgFinPlacerBateaux(){
     System.out.println("Tous les bateaux ont été placés");
   }
@@ -63,6 +64,11 @@ public class OutputConsole implements iOutput {
   }
 
   @Override
+  public void msgFinAttaqueAdversaire(ResultatAttaque resultat, Coordonnee coord){
+    System.out.println("Résultat de l'attaque de l'adversaire en " + coord + " : " + resultat);
+  }
+
+  @Override
   public void msgSaisieCoordonnee() {
     System.out.print("Veuillez saisir une coordonnée de type algébrique (ex: A1) : ");
   }
@@ -75,6 +81,21 @@ public class OutputConsole implements iOutput {
   @Override
   public void msgSaisieOrientation() {
     System.out.print("Veuillez saisir une orientation (H ou V) : ");
+  }
+
+  @Override
+  public void msgTourAdversaire() {
+    System.out.println("Veuillez attendre la fin du tour de l'adversaire...");
+  }
+
+  @Override
+  public void msgFinTourAdversaire() {
+    System.out.println("Fin du tour de l'adversaire !");
+  }
+
+  @Override
+  public void msgSaisieNomAdversaire() {
+    System.out.println("Veuillez attendre que votre adversaire entre le nom de son joueur...");
   }
 
   @Override
