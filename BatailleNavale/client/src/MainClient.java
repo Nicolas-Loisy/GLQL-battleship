@@ -4,10 +4,11 @@ import inputOutput.iInput;
 import inputOutput.iOutput;
 import reseau.Client;
 
-public class Main {
+public class MainClient {
   public static void main(String[] args) {
+    System.out.println("[DEBUT CLIENT]\n");
     // Définir les paramètres de connexion serveur
-    final String ip = "localhost";
+    final String ip = "2a04:cec0:f062:29f9:481a:a2e3:2121:fe50";
     final int port = 8080;
 
     // Se connecter au serveur

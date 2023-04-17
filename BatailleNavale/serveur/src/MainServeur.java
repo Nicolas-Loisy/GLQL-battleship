@@ -8,20 +8,21 @@ import jeu.TypeParam;
 import jeu.bateaux.TypeBateaux;
 import jeu.joueurs.TypeJoueur;
 
-public class Main {
+public class MainServeur {
 
   public static void main(String[] args) {
+    System.out.println("[DEBUT SERVEUR]\n");
     int nbrJoueurs = 2;
 
     // CREATION DES JOUEURS
     List<TypeJoueur> typeJoueurs = new ArrayList<>();
-    typeJoueurs.add(TypeJoueur.ORDI_HASARD);
+    typeJoueurs.add(TypeJoueur.HUMAIN);
     typeJoueurs.add(TypeJoueur.HUMAIN);
 
     // CREATION DES JOUEURS
     List<TypeBateaux> bateauxAPlacer = new ArrayList<>();
     bateauxAPlacer.add(TypeBateaux.SOUS_MARIN);
-    bateauxAPlacer.add(TypeBateaux.CROISEUR);
+    // bateauxAPlacer.add(TypeBateaux.CROISEUR);
     // bateauxAPlacer.add(TypeBateaux.TORPILLEUR);
     // bateauxAPlacer.add(TypeBateaux.CONTRE_TORPILLEUR);
     // bateauxAPlacer.add(TypeBateaux.PORTE_AVION);

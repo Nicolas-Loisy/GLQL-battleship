@@ -53,6 +53,7 @@ public class Jeu {
     }
 
     // Création du serveur
+    //A FAIRE vérification de la création
     Serveur serveur = new Serveur(PORT, cptJoueursHumain);
     JoueurFactory.setServeur(serveur);
     // Création des joueurs
