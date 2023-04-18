@@ -84,7 +84,7 @@ public class Humain extends aJoueur {
     Orientation orient = null;
 
     do {
-      String str = communiquer(TypeCommunication.ACT, TypeClefs.ORIENT);
+      String str = communiquer(TypeCommunication.ACT, TypeClefs.ORIENT).toUpperCase();
       if (str.equals("V")) {
         orient = Orientation.VERTICAL;
       }
@@ -106,7 +106,6 @@ public class Humain extends aJoueur {
       if (plateau.length() == 0) {
         communiquer(TypeCommunication.AFF, TypeClefs.PLAT_VIDE);
       } else {
-        System.out.println(plateau);
         communiquer(TypeCommunication.AFF, TypeClefs.PLAT, plateau);
       }
 

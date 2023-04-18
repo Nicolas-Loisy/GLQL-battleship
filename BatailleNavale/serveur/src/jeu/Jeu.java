@@ -53,7 +53,6 @@ public class Jeu {
     }
 
     // Création du serveur
-    //A FAIRE vérification de la création
     Serveur serveur = new Serveur(PORT, cptJoueursHumain);
     JoueurFactory.setServeur(serveur);
     // Création des joueurs
@@ -80,7 +79,7 @@ public class Jeu {
         cptTour++;
       }
       for (iJoueur j : joueurs) {
-        j.communiquer(TypeCommunication.AFF, TypeClefs.PARTIE_FIN);
+        j.communiquer(TypeCommunication.AFF, TypeClefs.PARTIE_FIN, gagnant.getNom());
       }
     } catch (IOException e) {
       e.printStackTrace();

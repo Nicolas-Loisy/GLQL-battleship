@@ -12,10 +12,11 @@ import java.util.ResourceBundle;
 public class OutputConsole implements iOutput {
 
   private ResourceBundle messages;
+  private final String root = "ressources/messages";
 
   public OutputConsole() {
     Locale locale = new Locale("fr");
-    messages = ResourceBundle.getBundle("ressources/messages", locale); 
+    messages = ResourceBundle.getBundle(root, locale); 
   }
 
   @Override
@@ -64,4 +65,5 @@ public class OutputConsole implements iOutput {
     }
     System.out.print(message);
   }
+
 }

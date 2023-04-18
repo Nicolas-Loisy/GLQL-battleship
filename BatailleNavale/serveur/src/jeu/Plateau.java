@@ -195,7 +195,7 @@ public class Plateau {
       for (Map.Entry<Bateau, Coordonnee[]> entry : map.entrySet()) {
         Bateau bateau = entry.getKey();
         Coordonnee[] coordonnees = entry.getValue();
-        sb.append(bateau.getNom()).append(":");
+        sb.append(bateau).append(":");
         for (Coordonnee coord : coordonnees) {
           sb.append(coord).append(",");
         }
