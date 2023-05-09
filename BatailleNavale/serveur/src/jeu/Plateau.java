@@ -11,9 +11,6 @@ import jeu.bateaux.Bateau;
 import jeu.exceptions.TypeException;
 import jeu.exceptions.ReglesException;
 
-/**
- * Plateau de jeu du jeu de bataille navale
- */
 public class Plateau {
   private static final int MAX_LIGNE = 10;
   private static final int MAX_COLONNE = 10;
@@ -44,22 +41,26 @@ public class Plateau {
     if (coordonnees.length != bateau.getTaille()) {
       throw new ReglesException(TypeException.TAILLE_BATEAU_ERROR);
     }
+    
     for (Coordonnee coord : coordonnees) {
       // Vérifie que la coordonnée est sur le plateau
       if (!isCoordonneeSurPlateau(coord)) {
         throw new ReglesException(TypeException.HORS_PLATEAU_ERROR);
       }
+    
       // Vérifie que la coordonnée est disponible
       if (!isCoordonneeLibre(coord)) {
         throw new ReglesException(TypeException.COORD_OCCUPEE_ERROR);
       }
     }
+    
     // Vérifie que les coordonnées du bateau sont adjacentes en ligne ou en colonne
     for (int i = 1; i < coordonnees.length; i++) {
       if (!isAdjacentes(coordonnees[i - 1], coordonnees[i])) {
         throw new ReglesException(TypeException.COORDONNEES_ADJACENTES_ERROR);
       }
     }
+    
     // Ajoute le bateau sur le plateau
     Map<Bateau, Coordonnee[]> bateauCoords = new HashMap<>();
     bateauCoords.put(bateau, coordonnees);
@@ -89,6 +90,7 @@ public class Plateau {
           return ResultatAttaque.TOUCHE;
         } else {
           supprimerBateau(bateau);
+    
           return ResultatAttaque.COULE;
         }
       }
@@ -112,6 +114,7 @@ public class Plateau {
         }
       }
     }
+    
     return true;
   }
 
@@ -127,10 +130,11 @@ public class Plateau {
    *         valeur vide si la coordonnée n'est pas trouvée.
    */
   private Optional<Map<Bateau, Coordonnee[]>> trouverBateau(Coordonnee coord) {
-    // Parcourt la liste des bateaux
     for (Map<Bateau, Coordonnee[]> bateau : bateaux) {
+    
       // Récupère le tableau de coordonnées du bateau
       Coordonnee[] coordonnees = bateau.values().iterator().next();
+    
       // Teste si la coordonnée est dans le tableau
       for (Coordonnee c : coordonnees) {
         if (c.equals(coord)) {
@@ -139,7 +143,7 @@ public class Plateau {
         }
       }
     }
-    // Retourne une valeur vide si aucun bateau ne contient la coordonnée
+    
     return Optional.empty();
   }
 
@@ -157,6 +161,7 @@ public class Plateau {
         return i;
       }
     }
+    
     return -1;
   }
 
@@ -170,8 +175,9 @@ public class Plateau {
   private Coordonnee[] supprimerCoordonnee(Coordonnee[] coordonnees, int index) {
     // Convertit le tableau en une liste modifiable
     List<Coordonnee> listeCoord = new ArrayList<>(Arrays.asList(coordonnees));
-    // Supprime la coordonnée à l'index donné de la liste
+    
     listeCoord.remove(index);
+    
     // Convertit la liste en un nouveau tableau de coordonnées
     return listeCoord.toArray(new Coordonnee[0]);
   }
@@ -190,12 +196,15 @@ public class Plateau {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     int numBateaux = 0;
+    
     for (Map<Bateau, Coordonnee[]> map : bateaux) {
       numBateaux += map.size();
+    
       for (Map.Entry<Bateau, Coordonnee[]> entry : map.entrySet()) {
         Bateau bateau = entry.getKey();
         Coordonnee[] coordonnees = entry.getValue();
         sb.append(bateau).append(":");
+    
         for (Coordonnee coord : coordonnees) {
           sb.append(coord).append(",");
         }
@@ -204,9 +213,11 @@ public class Plateau {
         sb.append("&");
       }
     }
+    
     if (numBateaux > 0) {
       sb.deleteCharAt(sb.length() - 1); // Supprimer le dernier &
     }
+    
     return sb.toString();
   }
 

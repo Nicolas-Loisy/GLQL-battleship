@@ -62,6 +62,7 @@ public abstract class aJoueur implements iJoueur{
   protected void placerBateau(Bateau bateau, Coordonnee coordDepart, Orientation orientation) throws ReglesException {
     int taille = bateau.getTaille();
     Coordonnee[] coordonnees = new Coordonnee[taille];
+    
     // Calcul des coordonnées en fonction de l'orientation
     if (orientation == Orientation.HORIZONTAL) {
       for (int i = 0; i < taille; i++) {
@@ -83,9 +84,11 @@ public abstract class aJoueur implements iJoueur{
   @Override
   public ResultatAttaque attaquer(iJoueur joueurAdverse, Coordonnee coord) {
     ResultatAttaque resultat = joueurAdverse.recevoirAttaque(coord);
+    
     if (!attaques.containsKey(coord)) {
       attaques.put(coord, resultat);
     }
+    
     return resultat;
   }
 
@@ -104,13 +107,16 @@ public abstract class aJoueur implements iJoueur{
   public String getAttaquesHistorique() {
     Map<Coordonnee, ResultatAttaque> attaques = getAttaques();
     StringBuilder sb = new StringBuilder();
+    
     for (Iterator<Coordonnee> it = attaques.keySet().iterator(); it.hasNext();) {
       Coordonnee coord = it.next();
       sb.append(coord).append(":").append(attaques.get(coord));
+    
       if (it.hasNext()) {
         sb.append("&");
       }
     }
+    
     return sb.toString();
   }
 

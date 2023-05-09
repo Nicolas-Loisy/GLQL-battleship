@@ -6,8 +6,7 @@ import java.util.ResourceBundle;
 
 /**
  * La classe OutputConsole implémente l'interface iOutput et définit les
- * méthodes pour afficher
- * les messages à l'utilisateur via la console.
+ * méthodes pour afficher les messages à l'utilisateur via la console.
  */
 public class OutputConsole implements iOutput {
 
@@ -32,15 +31,18 @@ public class OutputConsole implements iOutput {
 
     switch (clef) {
       case "ATK_HIST" : 
-        if (params == null) {
+        
+      if (params == null) {
           message = messages.getString("ATK_HIST_VIDE");
         } else {
           str = messages.getString("ATK_HIST_CONT");
           sb.append(messages.getString(clef));
+      
           for (Object param : params) {
             Object[] atkParams = ((String) param).split(":");
             sb.append(MessageFormat.format(str, atkParams));
           }
+      
           sb.append("\n");
           message = sb.toString();
         }
@@ -48,6 +50,7 @@ public class OutputConsole implements iOutput {
       case "PLAT" :
         sb.append(messages.getString(clef));
         str = messages.getString("PLAT_CONT");
+      
         for (Object param : params) {
           Object[] atkParams = ((String) param).split(":");
           sb.append(MessageFormat.format(str, atkParams));

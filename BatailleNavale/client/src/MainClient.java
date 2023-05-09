@@ -7,6 +7,7 @@ import reseau.Client;
 public class MainClient {
   public static void main(String[] args) {
     System.out.println("[DEBUT CLIENT]\n");
+    
     // Définir les paramètres de connexion serveur
     final String ip = "localhost";
     final int port = 8080;
@@ -19,8 +20,8 @@ public class MainClient {
     iInput in = InputOutputFactory.getInput(typeInOut);
     iOutput out = InputOutputFactory.getOutput(typeInOut);
 
-    // Appeler les fonctions correspondantes au tour de jeu
     String clef = "";
+
     while (!clef.equals("PARTIE_FIN")) {
       String msgServeur = client.recevoir();
       String[] splitMsg = msgServeur.split("#");
@@ -42,7 +43,6 @@ public class MainClient {
       }
     }
 
-    // Deconnexion
     client.deconnexion();
   }
 

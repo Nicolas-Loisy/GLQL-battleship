@@ -1,8 +1,5 @@
 package inputOutput;
 
-/**
- * Cette classe représente une fabrique de classes InputOutput
- */
 public class InputOutputFactory {
   public static iInput getInput(TypeInOut inOutType) {
     switch(inOutType) {

@@ -15,20 +15,17 @@ public class Coordonnee {
   }
 
   public Coordonnee(String coord) throws ReglesException {
-     // Vérifie qu'il y a au moins une lettre et un chiffre
-     if (!coord.matches("(?=.*[a-zA-Z])(?=.*\\d).+")) {
+    if (!coord.matches("(?=.*[a-zA-Z])(?=.*\\d).+")) {
       throw new ReglesException(TypeException.STRCOORD_MINIMUM_ERROR);
     }
 
-    // Vérifie que la chaîne commence par toutes les lettres écrites à la suite
     if (!coord.matches("^[a-zA-Z]+[0-9]+$")) {
-      throw new ReglesException(TypeException.LETTRES_CONSECUTIVES_ERROR);
-    }
-
-    // Vérifie que la chaîne se termine par tous les chiffres écrits à la suite
-    if (!coord.matches("^[a-zA-Z]+\\d+$")) {
-      throw new ReglesException(TypeException.CHIFFRES_CONSECUTIVES_ERROR);
-    }
+      if (coord.matches("^[a-zA-Z]+")) {
+        throw new ReglesException(TypeException.LETTRES_CONSECUTIVES_ERROR);
+      } else {
+        throw new ReglesException(TypeException.CHIFFRES_CONSECUTIVES_ERROR);
+      }
+    }    
 
     String ligneStr = "";
     int i = 0;
@@ -39,8 +36,8 @@ public class Coordonnee {
     }
 
     try {
-      this.ligne = getLigneFromStr(ligneStr); // La lettre représente la ligne
-      this.colonne = Integer.parseInt(coord.substring(i)); // Le nombre représente la colonne
+      this.ligne = getLigneFromStr(ligneStr);
+      this.colonne = Integer.parseInt(coord.substring(i));
     } catch (NumberFormatException e) {
       throw new IllegalArgumentException("Impossible d'extraire les valeurs valeurs de " + coord);
     }
@@ -58,7 +55,9 @@ public class Coordonnee {
    */
   private static int getLigneFromStr(String ligneStr) {
     int ligne = 0;
+
     ligneStr = ligneStr.toUpperCase(); // convertit en majuscules pour simplifier
+    
     for (int i = 0; i < ligneStr.length(); i++) {
       char c = ligneStr.charAt(ligneStr.length() - 1 - i);
       if (c < 'A' || c > 'Z') {
@@ -66,6 +65,7 @@ public class Coordonnee {
       }
       ligne += (c - 'A' + 1) * Math.pow(26, i);
     }
+
     return ligne;
   }
 
@@ -79,12 +79,15 @@ public class Coordonnee {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     int tempLigne = this.ligne;
+    
     while (tempLigne > 0) {
       int mod = (tempLigne - 1) % 26;
       sb.insert(0, (char) (mod + 'A'));
       tempLigne = (tempLigne - mod - 1) / 26;
     }
+    
     sb.append(this.colonne);
+    
     return sb.toString();
   }
 
@@ -93,10 +96,12 @@ public class Coordonnee {
     if (this == obj) {
       return true;
     }
+    
     if (obj == null || !(obj instanceof Coordonnee)) {
       return false;
     }
     Coordonnee other = (Coordonnee) obj;
+    
     return this.ligne == other.ligne && this.colonne == other.colonne;
   }
 

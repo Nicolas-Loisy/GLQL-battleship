@@ -31,6 +31,7 @@ public class Client {
       return in.readLine();
     } catch (Exception e) {
       System.err.println("Erreur lors de la réception de message : " + e.getMessage());
+      
       return null;
     }
   }

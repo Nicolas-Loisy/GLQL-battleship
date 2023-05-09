@@ -1,9 +1,5 @@
 package jeu.bateaux;
 
-/**
- * La classe Bateau représente un bateau avec un nom et une taille.
- * Elle implémente l'interface Bateau.
- */
 public class Bateau {
 
   private String nom;
@@ -34,11 +30,13 @@ public class Bateau {
     } else {
       StringBuilder resultat = new StringBuilder();
       String[] mots = nom.split("[ -]");
+      
       for (String m : mots) {
         if (!m.isEmpty()) {
           resultat.append(Character.toUpperCase(m.charAt(0)));
         }
       }
+
       return resultat.toString();
     }
   }

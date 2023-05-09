@@ -25,9 +25,8 @@ public class Humain extends aJoueur {
     this.out = new PrintWriter(socket.getOutputStream(), false);
     this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-    communiquer(TypeCommunication.AFF, TypeClefs.SERV_CONF);
+    communiquer(TypeCommunication.AFFICHER, TypeClefs.SERV_CONF);
     super.setNom(saisieNom());
-
   }
 
   @Override
@@ -35,9 +34,10 @@ public class Humain extends aJoueur {
     String nom = null;
 
     do {
-      nom = communiquer(TypeCommunication.ACT, TypeClefs.NOM);
+      nom = communiquer(TypeCommunication.ACTION, TypeClefs.NOM);
+      
       if (nom.equals("")) {
-        communiquer(TypeCommunication.AFF, TypeClefs.NOM_NUL);
+        communiquer(TypeCommunication.AFFICHER, TypeClefs.NOM_NUL);
       }
     } while (nom.equals(""));
     
@@ -49,29 +49,32 @@ public class Humain extends aJoueur {
     Coordonnee coord = null;
 
     do {
-      String str = communiquer(TypeCommunication.ACT, TypeClefs.COORD);
+      String str = communiquer(TypeCommunication.ACTION, TypeClefs.COORD);
+      
       try {
         coord = new Coordonnee(str);
+      
         if (coord.getLigne() > Plateau.getNombreLigne() || coord.getColonne() > Plateau.getNombreColonne()){
           coord = null;
           throw new ReglesException(TypeException.HORS_PLATEAU_ERROR);
         } 
       } catch(ReglesException e) {
+      
         switch(e.getErrorCode()) {
           case LETTRES_CONSECUTIVES_ERROR :
-            communiquer(TypeCommunication.AFF, TypeClefs.COORD_LETTRES_CONS);
+            communiquer(TypeCommunication.AFFICHER, TypeClefs.COORD_LETTRES_CONS);
             break;
           case CHIFFRES_CONSECUTIVES_ERROR :
-            communiquer(TypeCommunication.AFF, TypeClefs.COORD_CHIFFRES_CONS);
+            communiquer(TypeCommunication.AFFICHER, TypeClefs.COORD_CHIFFRES_CONS);
             break;
           case STRCOORD_MINIMUM_ERROR :
-            communiquer(TypeCommunication.AFF, TypeClefs.COORD_STR_MINIMUM);
+            communiquer(TypeCommunication.AFFICHER, TypeClefs.COORD_STR_MINIMUM);
             break;
           case HORS_PLATEAU_ERROR :
-            communiquer(TypeCommunication.AFF, TypeClefs.COORD_HORS_PLAT);
+            communiquer(TypeCommunication.AFFICHER, TypeClefs.COORD_HORS_PLAT);
             break;
           default :
-            communiquer(TypeCommunication.AFF, TypeClefs.COORD_INV);
+            communiquer(TypeCommunication.AFFICHER, TypeClefs.COORD_INV);
         }
       }
     } while (coord == null);
@@ -84,7 +87,8 @@ public class Humain extends aJoueur {
     Orientation orient = null;
 
     do {
-      String str = communiquer(TypeCommunication.ACT, TypeClefs.ORIENT).toUpperCase();
+      String str = communiquer(TypeCommunication.ACTION, TypeClefs.ORIENT).toUpperCase();
+      
       if (str.equals("V")) {
         orient = Orientation.VERTICAL;
       }
@@ -92,48 +96,54 @@ public class Humain extends aJoueur {
         orient = Orientation.HORIZONTAL;
       }
       else {
-        communiquer(TypeCommunication.AFF, TypeClefs.ORIENT_INV);
+        communiquer(TypeCommunication.AFFICHER, TypeClefs.ORIENT_INV);
       }
     } while (orient == null);
+    
     return orient;
   }
 
   @Override
   public void placerBateaux(List<Bateau> bateauxAPlacer) throws IOException {
-    communiquer(TypeCommunication.AFF, TypeClefs.PLACER_DEB);
+    communiquer(TypeCommunication.AFFICHER, TypeClefs.PLACER_DEB);
+    
     for (Bateau bateau : bateauxAPlacer) {
       String plateau = super.getPlateau().toString();
+    
       if (plateau.length() == 0) {
-        communiquer(TypeCommunication.AFF, TypeClefs.PLAT_VIDE);
+        communiquer(TypeCommunication.AFFICHER, TypeClefs.PLAT_VIDE);
       } else {
-        communiquer(TypeCommunication.AFF, TypeClefs.PLAT, plateau);
+        communiquer(TypeCommunication.AFFICHER, TypeClefs.PLAT, plateau);
       }
 
-      communiquer(TypeCommunication.AFF, TypeClefs.BATEAU, bateau.getNom(), Integer.toString(bateau.getTaille()));
+      communiquer(TypeCommunication.AFFICHER, TypeClefs.BATEAU, bateau.getNom(), Integer.toString(bateau.getTaille()));
 
       Boolean bateauPlace = false;
+    
       while (!bateauPlace) {
         Coordonnee coordDepart = saisieCoordonnee();
         Orientation orientation = saisieOrientation();
+    
         try {
           super.placerBateau(bateau, coordDepart, orientation);
           bateauPlace = true;
-          communiquer(TypeCommunication.AFF, TypeClefs.BATEAU_CONF);
+          communiquer(TypeCommunication.AFFICHER, TypeClefs.BATEAU_CONF);
         } catch (ReglesException e) {
+    
           switch (e.getErrorCode()) {
             case COORD_OCCUPEE_ERROR :
-              communiquer(TypeCommunication.AFF, TypeClefs.COORD_OCCUPEE, coordDepart.toString());
+              communiquer(TypeCommunication.AFFICHER, TypeClefs.COORD_OCCUPEE, coordDepart.toString());
               break;
             case HORS_PLATEAU_ERROR :
-              communiquer(TypeCommunication.AFF, TypeClefs.COORD_HORS_PLAT);
+              communiquer(TypeCommunication.AFFICHER, TypeClefs.COORD_HORS_PLAT);
               break;
             default :
-              communiquer(TypeCommunication.AFF, TypeClefs.BATEAU_INV);
+              communiquer(TypeCommunication.AFFICHER, TypeClefs.BATEAU_INV);
           }
         }
       }
     }
-    communiquer(TypeCommunication.AFF, TypeClefs.PLACER_FIN);
+    communiquer(TypeCommunication.AFFICHER, TypeClefs.PLACER_FIN);
   }
 
   public String communiquer(TypeCommunication typeCom, TypeClefs clef, String... params) throws IOException {
@@ -143,9 +153,11 @@ public class Humain extends aJoueur {
       out.println(typeCom.name() + "#" + clef.name());
     }
     out.flush();
-    if (typeCom == TypeCommunication.ACT){
+    
+    if (typeCom == TypeCommunication.ACTION){
       return in.readLine();
     }
+    
     return null;
   }
 }

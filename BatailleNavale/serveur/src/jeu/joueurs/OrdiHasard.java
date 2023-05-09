@@ -55,6 +55,7 @@ public class OrdiHasard extends aJoueur {
 
     Random rand = new Random();
     int randomIndex = rand.nextInt(prenoms.length);
+    
     return prenoms[randomIndex];
   }
 
@@ -66,6 +67,7 @@ public class OrdiHasard extends aJoueur {
     int ligne = rand.nextInt(maxLigne);
     int colonne = rand.nextInt(maxColonne);
     Coordonnee coord = new Coordonnee(ligne, colonne);
+    
     return coord;
   }
 
@@ -73,6 +75,7 @@ public class OrdiHasard extends aJoueur {
   public Orientation saisieOrientation() {
     Random rand = new Random();
     int choice = rand.nextInt(2);
+    
     if (choice == 0) {
       return Orientation.HORIZONTAL;
     } else {
@@ -84,9 +87,11 @@ public class OrdiHasard extends aJoueur {
   public void placerBateaux(List<Bateau> bateauxAPlacer) {
     for (Bateau bateau : bateauxAPlacer) {
       Boolean bateauPlace = false;
+    
       while (!bateauPlace) {
         Coordonnee coordDepart = saisieCoordonnee();
         Orientation orientation = saisieOrientation();
+    
         try {
           super.placerBateau(bateau, coordDepart, orientation);
           bateauPlace = true;

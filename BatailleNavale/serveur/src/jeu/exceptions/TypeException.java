@@ -1,8 +1,6 @@
 package jeu.exceptions;
 
-/**
- * Enumération des codes d'exception pour le jeu de bataille navale.
- */
+
 public enum TypeException {
   
   NOM_ERROR("Le nom doit comporter au moins 1 caractère."),

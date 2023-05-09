@@ -14,7 +14,9 @@ public class JoueurFactory {
   
   public static iJoueur creerJoueur(TypeJoueur JoueurType) throws IOException {
     System.out.println("[SERVEUR] Création d'un joueur de type " + JoueurType);
+    
     switch(JoueurType) {
+    
       case ORDI_HASARD :
         return new OrdiHasard();
       case HUMAIN :
