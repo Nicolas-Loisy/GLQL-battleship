@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MainServeur",
+            "request": "launch",
+            "mainClass": "MainServeur",
+            "projectName": "BatailleNavale"
+        },
+        {
+            "type": "java",
+            "name": "MainServeur",
+            "request": "launch",
+            "mainClass": "MainServeur",
+            "projectName": "mon-projet"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "MainClient",
+            "request": "launch",
+            "mainClass": "MainClient",
+            "projectName": "GLQL-battleship_172cd73e"
+        },
+        {
+            "type": "java",
+            "name": "MainServeur",
+            "request": "launch",
+            "mainClass": "MainServeur",
+            "projectName": "GLQL-battleship_172cd73e"
+        }
+    ]
+}
