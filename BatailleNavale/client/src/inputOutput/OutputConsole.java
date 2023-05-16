@@ -11,10 +11,10 @@ import java.util.ResourceBundle;
 public class OutputConsole implements iOutput {
 
   private ResourceBundle messages;
-  private final String root = "ressources/messages";
+  private final String root = "messages";
 
   public OutputConsole() {
-    Locale locale = new Locale("fr");
+    Locale locale = new Locale.Builder().setLanguage("fr").setRegion("FR").build();
     messages = ResourceBundle.getBundle(root, locale); 
   }
 
@@ -32,7 +32,7 @@ public class OutputConsole implements iOutput {
     switch (clef) {
       case "ATK_HIST" : 
         
-      if (params == null) {
+        if (params == null) {
           message = messages.getString("ATK_HIST_VIDE");
         } else {
           str = messages.getString("ATK_HIST_CONT");
