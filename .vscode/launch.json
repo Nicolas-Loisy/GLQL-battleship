@@ -1,42 +1,42 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "type": "java",
-            "name": "MainServeur",
+            "name": "Main",
             "request": "launch",
-            "mainClass": "MainServeur",
-            "projectName": "BatailleNavale"
-        },
-        {
-            "type": "java",
-            "name": "MainServeur",
-            "request": "launch",
-            "mainClass": "MainServeur",
-            "projectName": "mon-projet"
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "inputOutput.Main",
+            "projectName": "",
+            "cwd": "${workspaceFolder}/BatailleNavale/client",
+            "classPaths": [
+                "${workspaceFolder}/BatailleNavale/client/src/main/resources"
+            ]
         },
         {
             "type": "java",
             "name": "MainClient",
             "request": "launch",
             "mainClass": "MainClient",
-            "projectName": "GLQL-battleship_172cd73e"
+            "projectName": ""
         },
         {
             "type": "java",
             "name": "MainServeur",
             "request": "launch",
             "mainClass": "MainServeur",
-            "projectName": "GLQL-battleship_172cd73e"
+            "projectName": "BatailleNavale",
+            "modulePaths": [
+                "${workspaceFolder}/BatailleNavale/serveur/target/classes"
+            ],
+            "classPaths": [
+                "${workspaceFolder}/BatailleNavale/serveur/target/classes"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
         }
     ]
 }

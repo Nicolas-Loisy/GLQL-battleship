@@ -37,7 +37,7 @@ public class MainClient {
         out.afficherMsg(clef, params);
       }
 
-      if(typeMessage.equals("ACT")) {
+      if(typeMessage.equals("ACTION")) {
         String nom = in.saisieJoueur();
         client.envoyer(nom);
       }
