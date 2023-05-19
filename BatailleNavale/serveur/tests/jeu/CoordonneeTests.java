@@ -7,7 +7,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import jeu.Coordonnee;
 import jeu.exceptions.ReglesException;
 import jeu.exceptions.TypeException;
 
