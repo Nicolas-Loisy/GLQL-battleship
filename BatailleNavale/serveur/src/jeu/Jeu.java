@@ -132,10 +132,10 @@ public class Jeu {
       ResultatAttaque resultat = joueur.attaquer(adversaire, coord);
 
       for (iJoueur autreJoueur : joueurs) {
-        autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.ATK_RES, adversaire.toString() , coord.toString(), resultat.name());
+        autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.ATK_RES, adversaire.toString(), coord.toString(), resultat.name());
       }
 
-      encoreUneAttaque = ResultatAttaque.MANQUE.equals(resultat);
+      encoreUneAttaque = ResultatAttaque.TOUCHE.equals(resultat) || ResultatAttaque.COULE.equals(resultat);
 
       if (adversaire.getNbrBateauxRestants() == 0) {
         joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.PARTIE_GAGNEE);
