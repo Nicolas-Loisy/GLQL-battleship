@@ -107,6 +107,7 @@ public class Jeu {
     return bateaux;
   }
 
+  // refacto
   public iJoueur tourDeJeu() throws IOException {
     iJoueur joueur = joueurs[cptTour % nbrJoueurs];
     iJoueur adversaire = joueurs[(cptTour + 1) % nbrJoueurs];
