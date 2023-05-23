@@ -99,14 +99,7 @@ public class Plateau {
     return ResultatAttaque.MANQUE;
   }
 
-  /**
-   * Vérifie si une coordonnée donnée est libre (non occupée par un bateau).
-   *
-   * @param coordonnee La coordonnée à vérifier.
-   * @return true si la coordonnée est libre, false sinon.
-   */
   public boolean isCoordonneeLibre(Coordonnee coordonnee) {
-    // Vérifie que la coordonnée n'est pas déjà occupée par un bateau
     for (Map<Bateau, Coordonnee[]> bateau : bateaux) {
       for (Coordonnee[] coordonnees : bateau.values()) {
         if (Arrays.stream(coordonnees).anyMatch(c -> c.equals(coordonnee))) {
@@ -199,7 +192,7 @@ public class Plateau {
     
     for (Map<Bateau, Coordonnee[]> map : bateaux) {
       numBateaux += map.size();
-    
+    // TODO stream
       for (Map.Entry<Bateau, Coordonnee[]> entry : map.entrySet()) {
         Bateau bateau = entry.getKey();
         Coordonnee[] coordonnees = entry.getValue();
