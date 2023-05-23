@@ -85,7 +85,7 @@ public abstract class aJoueur implements iJoueur{
   public ResultatAttaque attaquer(iJoueur joueurAdverse, Coordonnee coord) {
     ResultatAttaque resultat = joueurAdverse.recevoirAttaque(coord);
     
-    if (!attaques.containsKey(coord)) {
+    if (!attaques.containsKey(coord) || attaques.get(coord) == ResultatAttaque.EVITE ) {
       attaques.put(coord, resultat);
     }
     
