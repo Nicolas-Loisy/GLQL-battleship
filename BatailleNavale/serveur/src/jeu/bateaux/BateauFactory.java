@@ -7,6 +7,6 @@ package jeu.bateaux;
 public class BateauFactory {
 
     public static Bateau creerBateau(TypeBateaux type) {
-        return new Bateau(type.getNom(), type.getTaille());
+        return new Bateau(type.getNom(), type.getTaille(), type.getEsquive());
     }
 }

@@ -9,5 +9,6 @@ package jeu;
 public enum ResultatAttaque {
   MANQUE,
   TOUCHE,
+  EVITE,
   COULE,
 }

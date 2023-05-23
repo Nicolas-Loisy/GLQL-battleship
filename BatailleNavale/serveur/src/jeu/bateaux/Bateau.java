@@ -4,10 +4,12 @@ public class Bateau {
 
   private String nom;
   private int taille;
+  private double esquive;
 
-  public Bateau(String nom, int taille) {
+  public Bateau(String nom, int taille, double esquive) {
     this.nom = nom;
     this.taille = taille;
+    this.esquive = esquive;
   }
 
   public int getTaille() {
@@ -16,6 +18,10 @@ public class Bateau {
 
   public String getNom() {
     return nom;
+  }
+
+  public double getEsquive() {
+    return esquive;
   }
 
   /**

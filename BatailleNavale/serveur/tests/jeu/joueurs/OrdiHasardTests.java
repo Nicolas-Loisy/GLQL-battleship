@@ -46,8 +46,8 @@ public class OrdiHasardTests {
     public void testPlacerBateaux() throws ReglesException {
         OrdiHasard ordiHasard = new OrdiHasard();
     
-        Bateau bateau1 = new Bateau("Bateau1", 3);
-        Bateau bateau2 = new Bateau("Bateau2", 4);
+        Bateau bateau1 = new Bateau("Bateau1", 3, 0.1f);
+        Bateau bateau2 = new Bateau("Bateau2", 4, 0.2f);
         
         // Vérifier si les bateaux ont été placés correctement sur le plateau
         Plateau plateau = ordiHasard.getPlateau(); // Obtenez le plateau de jeu de l'OrdiHasard

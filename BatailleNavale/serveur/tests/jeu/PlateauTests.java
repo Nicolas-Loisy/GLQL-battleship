@@ -15,7 +15,7 @@ public class PlateauTests {
     @BeforeEach
     public void setUp() {
         plateau = new Plateau();
-        bateau = new Bateau("Bateau Test", 3); // Crée un bateau de taille 3
+        bateau = new Bateau("Bateau Test", 3, 0.1f); // Crée un bateau de taille 3
     }
 
     @Test
