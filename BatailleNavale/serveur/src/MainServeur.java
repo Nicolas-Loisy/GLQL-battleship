@@ -8,8 +8,18 @@ import jeu.TypeParam;
 import jeu.bateaux.TypeBateaux;
 import jeu.joueurs.TypeJoueur;
 
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class MainServeur {
+  
+  private static final Logger logger = LogManager.getLogger(MainServeur.class);
+  
   public static void main(String[] args) {
+    logger.info("Ceci est un message d'information");
+    logger.error("Ceci est un message d'erreur");
+
     System.out.println("[DEBUT SERVEUR]\n");
     int nbrJoueurs = 2;
 
