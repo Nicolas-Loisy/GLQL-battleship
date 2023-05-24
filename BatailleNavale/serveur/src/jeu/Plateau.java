@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import jeu.bateaux.Bateau;
 import jeu.exceptions.TypeException;
@@ -200,19 +201,20 @@ public class Plateau {
     
     for (Map<Bateau, Coordonnee[]> map : bateaux) {
       numBateaux += map.size();
-    // TODO stream
-      for (Map.Entry<Bateau, Coordonnee[]> entry : map.entrySet()) {
+
+      map.entrySet().forEach(entry -> {
         Bateau bateau = entry.getKey();
         Coordonnee[] coordonnees = entry.getValue();
         sb.append(bateau).append(":");
-    
-        for (Coordonnee coord : coordonnees) {
-          sb.append(coord).append(",");
-        }
-        sb.deleteCharAt(sb.length() - 1); // Supprimer la virgule en trop
-        
+
+        String coordonneesStr = Arrays.stream(coordonnees)
+          .map(Object::toString)
+          .collect(Collectors.joining(","))
+        ;
+
+        sb.append(coordonneesStr);
         sb.append("&");
-      }
+      });
     }
     
     if (numBateaux > 0) {

@@ -107,61 +107,79 @@ public class Jeu {
     return bateaux;
   }
 
-  // refacto
   public iJoueur tourDeJeu() throws IOException {
     iJoueur joueur = joueurs[cptTour % nbrJoueurs];
     iJoueur adversaire = joueurs[(cptTour + 1) % nbrJoueurs];
 
-    // Message du début du tour
-    joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_DEB);
-    joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.PLAT, joueur.getPlateau().toString());
+    afficherDebutTour(joueur);
+    afficherPlateauJoueur(joueur);
+    afficherDebutTourAdversaires(joueurs, joueur);
 
-    for (iJoueur autreJoueur : joueurs) {
-      if (autreJoueur.equals(joueur)) {
-        continue;
-      }
-      autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_DEB_ADV, joueur.getNom());
+    while (effectuerPhaseAttaque(joueur, adversaire)) {
+        if (adversaire.getNbrBateauxRestants() == 0) {
+            joueurRemportePartie(joueur);
+            afficherDefaiteAdversaires(joueurs, joueur);
+            return joueur;
+        }
     }
 
-    // Phase d'attaque
-    boolean encoreUneAttaque = true;
-    
-    while (encoreUneAttaque) {
+    afficherFinTour(joueur);
+    afficherFinTourAdversaires(joueurs, joueur);
+
+    return null;
+  }
+
+  private void afficherDebutTour(iJoueur joueur) throws IOException {
+      joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_DEB);
+  }
+
+  private void afficherPlateauJoueur(iJoueur joueur) throws IOException {
+      joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.PLAT, joueur.getPlateau().toString());
+  }
+
+  private void afficherDebutTourAdversaires(iJoueur[] joueurs, iJoueur joueur) throws IOException {
+      for (iJoueur autreJoueur : joueurs) {
+          if (!autreJoueur.equals(joueur)) {
+              autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_DEB_ADV, joueur.getNom());
+          }
+      }
+  }
+
+  private boolean effectuerPhaseAttaque(iJoueur joueur, iJoueur adversaire) throws IOException {
       joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.ATK_DEB);
       joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.ATK_HIST, joueur.getAttaquesHistorique());
       Coordonnee coord = joueur.saisieCoordonnee();
       ResultatAttaque resultat = joueur.attaquer(adversaire, coord);
 
       for (iJoueur autreJoueur : joueurs) {
-        autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.ATK_RES, adversaire.toString(), coord.toString(), resultat.name());
+          autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.ATK_RES, adversaire.toString(), coord.toString(), resultat.name());
       }
 
-      encoreUneAttaque = ResultatAttaque.TOUCHE.equals(resultat) || ResultatAttaque.COULE.equals(resultat);
-
-      if (adversaire.getNbrBateauxRestants() == 0) {
-        joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.PARTIE_GAGNEE);
-    
-        for (iJoueur autreJoueur : joueurs) {
-          if (autreJoueur.equals(joueur)) {
-            continue;
-          }
-          autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.PARTIE_PERDUE, joueur.getNom());
-        }
-    
-        return joueur;
-      }
-    }
-
-    // Message de fin de tour
-    joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_FIN);
-    
-    for (iJoueur autreJoueur : joueurs) {
-      if (autreJoueur.equals(joueur)) {
-        continue;
-      }
-      autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_FIN_ADV, joueur.getNom());
-    }
-    
-    return null;
+      return ResultatAttaque.TOUCHE.equals(resultat) || ResultatAttaque.COULE.equals(resultat);
   }
+
+  private void joueurRemportePartie(iJoueur joueur) throws IOException {
+      joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.PARTIE_GAGNEE);
+  }
+
+  private void afficherDefaiteAdversaires(iJoueur[] joueurs, iJoueur joueur) throws IOException {
+      for (iJoueur autreJoueur : joueurs) {
+          if (!autreJoueur.equals(joueur)) {
+              autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.PARTIE_PERDUE, joueur.getNom());
+          }
+      }
+  }
+
+  private void afficherFinTour(iJoueur joueur) throws IOException {
+      joueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_FIN);
+  }
+
+  private void afficherFinTourAdversaires(iJoueur[] joueurs, iJoueur joueur) throws IOException {
+      for (iJoueur autreJoueur : joueurs) {
+          if (!autreJoueur.equals(joueur)) {
+              autreJoueur.communiquer(TypeCommunication.AFFICHER, TypeClefs.TOUR_FIN_ADV, joueur.getNom());
+          }
+      }
+  }
+
 }
