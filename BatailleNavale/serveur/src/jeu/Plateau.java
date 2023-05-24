@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import jeu.bateaux.Bateau;
 import jeu.exceptions.TypeException;
@@ -76,28 +77,36 @@ public class Plateau {
    */
   public ResultatAttaque recevoirAttaque(Coordonnee coord) {
     Optional<Map<Bateau, Coordonnee[]>> bateauOptional = trouverBateau(coord);
-
+  
     if (bateauOptional.isPresent()) {
       Map<Bateau, Coordonnee[]> bateau = bateauOptional.get();
       Coordonnee[] coordonnees = bateau.get(bateau.keySet().iterator().next());
       int index = trouverIndexCoordonnee(coordonnees, coord);
-
+  
       if (index != -1) {
-        coordonnees = supprimerCoordonnee(coordonnees, index);
-        bateau.put(bateau.keySet().iterator().next(), coordonnees);
-
-        if (coordonnees.length > 0) {
-          return ResultatAttaque.TOUCHE;
+        Bateau bateauAttaque = bateau.keySet().iterator().next();
+        double esquive = bateauAttaque.getEsquive();
+        double random = Math.random();
+  
+        if (random > esquive) {
+          coordonnees = supprimerCoordonnee(coordonnees, index);
+          bateau.put(bateauAttaque, coordonnees);
+  
+          if (coordonnees.length > 0) {
+            return ResultatAttaque.TOUCHE;
+          } else {
+            supprimerBateau(bateau);
+            return ResultatAttaque.COULE;
+          }
         } else {
-          supprimerBateau(bateau);
-    
-          return ResultatAttaque.COULE;
+          return ResultatAttaque.EVITE;
         }
       }
     }
-
+  
     return ResultatAttaque.MANQUE;
   }
+  
 
   public boolean isCoordonneeLibre(Coordonnee coordonnee) {
     for (Map<Bateau, Coordonnee[]> bateau : bateaux) {
@@ -192,19 +201,20 @@ public class Plateau {
     
     for (Map<Bateau, Coordonnee[]> map : bateaux) {
       numBateaux += map.size();
-    // TODO stream
-      for (Map.Entry<Bateau, Coordonnee[]> entry : map.entrySet()) {
+
+      map.entrySet().forEach(entry -> {
         Bateau bateau = entry.getKey();
         Coordonnee[] coordonnees = entry.getValue();
         sb.append(bateau).append(":");
-    
-        for (Coordonnee coord : coordonnees) {
-          sb.append(coord).append(",");
-        }
-        sb.deleteCharAt(sb.length() - 1); // Supprimer la virgule en trop
-        
+
+        String coordonneesStr = Arrays.stream(coordonnees)
+          .map(Object::toString)
+          .collect(Collectors.joining(","))
+        ;
+
+        sb.append(coordonneesStr);
         sb.append("&");
-      }
+      });
     }
     
     if (numBateaux > 0) {

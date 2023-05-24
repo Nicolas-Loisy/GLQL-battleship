@@ -17,10 +17,7 @@ public class MainServeur {
   private static final Logger logger = LogManager.getLogger(MainServeur.class);
   
   public static void main(String[] args) {
-    logger.info("Ceci est un message d'information");
-    logger.error("Ceci est un message d'erreur");
-
-    System.out.println("[DEBUT SERVEUR]\n");
+    logger.info("[DEBUT SERVEUR]\n");
     int nbrJoueurs = 2;
 
     // CREATION DES JOUEURS

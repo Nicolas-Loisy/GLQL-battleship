@@ -5,19 +5,20 @@ package jeu.bateaux;
  * Chaque type de bateau a un nom et une taille.
  */
 public enum TypeBateaux {
-  
-  CROISEUR("Croiseur", 4),
-  PORTE_AVION("Porte-Avion", 5),
-  SOUS_MARIN("Sous-Marin", 3),
-  TORPILLEUR("Torpilleur", 4),
-  CONTRE_TORPILLEUR("Contre-Torpilleur", 5);
+  CROISEUR("Croiseur", 4, 0.1),
+  PORTE_AVION("Porte-Avion", 5, 0),
+  SOUS_MARIN("Sous-Marin", 3, 0.5),
+  TORPILLEUR("Torpilleur", 4, 0.1),
+  CONTRE_TORPILLEUR("Contre-Torpilleur", 3, 0.3);
 
   private String nom;
   private int taille;
+  private double esquive;
 
-  private TypeBateaux(String nom, int taille) {
+  private TypeBateaux(String nom, int taille, double esquive) {
     this.nom = nom;
     this.taille = taille;
+    this.esquive = esquive;
   }
 
   public int getTaille() {
@@ -26,6 +27,10 @@ public enum TypeBateaux {
 
   public String getNom() {
     return nom;
+  }
+
+  public double getEsquive(){
+    return esquive;
   }
 }
 
