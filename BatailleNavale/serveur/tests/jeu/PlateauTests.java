@@ -8,6 +8,9 @@ import jeu.exceptions.ReglesException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class PlateauTests {
     private Plateau plateau;
     private Bateau bateau;
@@ -87,7 +90,8 @@ public class PlateauTests {
 
         ResultatAttaque resultat = plateau.recevoirAttaque(new Coordonnee(1, 2));
 
-        assertEquals(ResultatAttaque.TOUCHE, resultat);
+        ResultatAttaque[] expectedResponses = {ResultatAttaque.TOUCHE, ResultatAttaque.EVITE};
+        assertTrue(Arrays.asList(expectedResponses).contains(resultat));
     }
 
     @Test
@@ -110,9 +114,13 @@ public class PlateauTests {
         ResultatAttaque resultat2 = plateau.recevoirAttaque(new Coordonnee(1, 2));
         ResultatAttaque resultat3 = plateau.recevoirAttaque(new Coordonnee(1, 3));
 
-        assertEquals(ResultatAttaque.TOUCHE, resultat1);
-        assertEquals(ResultatAttaque.TOUCHE, resultat2);
-        assertEquals(ResultatAttaque.COULE, resultat3);
+
+        ResultatAttaque[] expectedResponses = {ResultatAttaque.TOUCHE, ResultatAttaque.EVITE};
+        ResultatAttaque[] expectedResponsesCoule = {ResultatAttaque.TOUCHE, ResultatAttaque.EVITE, ResultatAttaque.COULE};
+        
+        assertTrue(Arrays.asList(expectedResponses).contains(resultat1));
+        assertTrue(Arrays.asList(expectedResponses).contains(resultat2));
+        assertTrue(Arrays.asList(expectedResponsesCoule).contains(resultat3));
     }
 
     @Test

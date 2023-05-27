@@ -44,3 +44,24 @@ Le projet est organisé en deux parties :
 - **Client** : contient les classes et les logiques du jeu côté client, y compris l'interface utilisateur, les interactions avec le serveur et la gestion des actions du joueur.
 
 Chaque partie du code est organisée dans des packages appropriés pour une meilleure lisibilité et maintenabilité.
+
+
+## Tests JUnit
+
+Le projet comprend des tests unitaires JUnit pour vérifier le bon fonctionnement des différentes parties du code. Les tests JUnit garantissent la qualité du code et aident à détecter les éventuels problèmes ou bugs.
+
+Les tests JUnit sont organisés dans des classes de test correspondantes aux classes testées. Chaque méthode de test est annotée avec @Test et contient les assertions qui vérifient le comportement attendu du code.
+
+## Exécution des tests JUnit
+
+Pour exécuter les tests JUnit, vous pouvez suivre les étapes suivantes :
+
+1. Assurez-vous que vous avez installé Maven sur votre machine.
+
+2. Ouvrez une console ou un terminal et accédez au répertoire racine du projet.
+
+3. Accédez au répertoire du serveur : `cd BatailleNavale/serveur`
+
+4. Exécutez la commande suivante pour exécuter tous les tests du projet : `mvn test`
+
+Cette commande exécutera tous les tests JUnit du projet et affichera les résultats dans la console ou le terminal.
