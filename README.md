@@ -14,14 +14,14 @@ GLQL-battleship : [ Java/Réseau ]
 Le projet utilise Maven, il est donc nécéssaire de l'avoir préalablement installé.
 
 1. Clonez le dépôt GitHub : `git clone https://github.com/Nicolas-Loisy/GLQL-battleship.git`
-2. Accédez au répertoire du serveur : `cd projet-bataille-navale/serveur`
+2. Accédez au répertoire du serveur : `cd BatailleNavale/serveur`
 3. Compilez le code du serveur : `mvn compile`
 4. Accédez au répertoire du client : `cd ../client`
 5. Compilez le code du client : `mvn compile`
 
 ## Démarrage du serveur
 
-1. Accédez au répertoire du serveur : `cd projet-bataille-navale/serveur`
+1. Accédez au répertoire du serveur : `cd BatailleNavale/serveur`
 2. Lancez le serveur : `mvn compile exec:java`
 
 Le serveur sera démarré et écoutera les connexions des clients sur un port spécifique.
