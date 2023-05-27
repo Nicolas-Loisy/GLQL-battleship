@@ -32,6 +32,9 @@ Le serveur sera démarré et écoutera les connexions des clients sur un port sp
 2. Lancez le client : `mvn compile exec:java`
 
 Le client se connectera au serveur et permettra au joueur de jouer contre le bot.
+Le jeu comporte tous les éléments de jeu d'une Bataille Navale classique avec une règle en plus.
+Règle bonus : Chaque bateau a une chance d'esquiver/de contrer une attaque.
+La partie est configurée avec deux bateaux (Sous-marin et Croiseur)
 
 ## Structure du code
 
