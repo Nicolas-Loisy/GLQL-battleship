@@ -23,7 +23,7 @@ public class BateauFactoryTests {
     public void testCreerBateau_ContreTorpilleur() {
         Bateau bateau = BateauFactory.creerBateau(TypeBateaux.CONTRE_TORPILLEUR);
         Assertions.assertEquals("Contre-Torpilleur", bateau.getNom());
-        Assertions.assertEquals(5, bateau.getTaille());
+        Assertions.assertEquals(3, bateau.getTaille());
     }
 
     @Test
